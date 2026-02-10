@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 3000; // O Render vai preencher process.env.PORT automaticamente
 
 // CONFIGURAÇÃO DA RÁDIO
 const AUDIO_DIR = path.join(__dirname, 'audio');
@@ -81,7 +81,7 @@ function playLoop() {
 
                 // Se leu menos que o tamanho do chunk (finalzinho da música), corta o buffer
                 const dataToSend = (bytesRead < CHUNK_SIZE) 
-                    ? buffer.slice(0, bytesRead) 
+                    ? buffer.subarray(0, bytesRead) 
                     : buffer;
 
                 // Envia para todos os ouvintes conectados
@@ -120,8 +120,8 @@ app.get('/stream', (req, res) => {
 });
 
 // Iniciar servidor
-app.listen(PORT, () => {
-    console.log(`Rádio ON em: http://localhost:${PORT}/stream`);
+app.listen(PORT, '0.0.0.0', ()=> {
+    console.log(`Rádio ON em: https://lovesong.theabyssus.shop/stream`);
     console.log(`Pasta de áudio: ${AUDIO_DIR}`);
     console.log(`IMPORTANTE: Use MP3s de ${BITRATE/1000}kbps`);
     
